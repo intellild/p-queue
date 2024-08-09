@@ -1,29 +1,33 @@
 {
-	"name": "p-queue",
+	"name": "@intellild/p-queue",
 	"version": "8.0.1",
-	"description": "Promise queue with concurrency control",
+	"description": "p-queue with commonjs support",
 	"license": "MIT",
-	"repository": "sindresorhus/p-queue",
+	"repository": "https://github.com/intellild/p-queue",
 	"funding": "https://github.com/sponsors/sindresorhus",
 	"type": "module",
 	"exports": {
 		"types": "./dist/index.d.ts",
-		"default": "./dist/index.js"
+		"import": "./dist/index.js",
+		"require": "./dist/index.cjs",
+		"main": "./dist/index.cjs"
 	},
 	"sideEffects": false,
 	"engines": {
 		"node": ">=18"
 	},
 	"scripts": {
-		"build": "del-cli dist && tsc",
+		"build": "vite build",
 		"test": "xo && ava && del-cli dist && tsc && tsd",
 		"bench": "node --import=tsx/esm bench.ts",
-		"prepublishOnly": "del-cli dist && tsc"
+		"prepublishOnly": "npm run build"
 	},
 	"files": [
 		"dist"
 	],
 	"types": "dist/index.d.ts",
+	"module": "./dist/index.js",
+	"main": "./dist/index.cjs",
 	"keywords": [
 		"promise",
 		"queue",
@@ -47,8 +51,7 @@
 		"bluebird"
 	],
 	"dependencies": {
-		"eventemitter3": "^5.0.1",
-		"p-timeout": "^6.1.2"
+		"eventemitter3": "^5.0.1"
 	},
 	"devDependencies": {
 		"@sindresorhus/tsconfig": "^5.0.0",
@@ -65,6 +68,8 @@
 		"tsd": "^0.29.0",
 		"tsx": "^4.6.2",
 		"typescript": "^5.3.3",
+		"vite": "^5.4.0",
+		"vite-plugin-dts": "^4.0.1",
 		"xo": "^0.56.0"
 	},
 	"ava": {
@@ -85,5 +90,6 @@
 			"@typescript-eslint/no-floating-promises": "off",
 			"@typescript-eslint/no-invalid-void-type": "off"
 		}
-	}
+	},
+	"packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
 }

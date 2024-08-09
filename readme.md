@@ -1,4 +1,4 @@
-# p-queue
+# Forked from [p-queue](https://github.com/sindresorhus/p-queue) with commonjs support
 
 > Promise queue with concurrency control
 
@@ -21,25 +21,25 @@ npm install p-queue
 Here we run only one promise at the time. For example, set `concurrency` to 4 to run four promises at the same time.
 
 ```js
-import PQueue from 'p-queue';
-import got from 'got';
+import PQueue from "p-queue";
+import got from "got";
 
-const queue = new PQueue({concurrency: 1});
+const queue = new PQueue({ concurrency: 1 });
 
 (async () => {
-	await queue.add(() => got('https://sindresorhus.com'));
-	console.log('Done: sindresorhus.com');
+	await queue.add(() => got("https://sindresorhus.com"));
+	console.log("Done: sindresorhus.com");
 })();
 
 (async () => {
-	await queue.add(() => got('https://avajs.dev'));
-	console.log('Done: avajs.dev');
+	await queue.add(() => got("https://avajs.dev"));
+	console.log("Done: avajs.dev");
 })();
 
 (async () => {
 	const task = await getUnicornTask();
 	await queue.add(task);
-	console.log('Done: Unicorn task');
+	console.log("Done: Unicorn task");
 })();
 ```
 
@@ -221,18 +221,18 @@ Size of the queue, filtered by the given options.
 For example, this can be used to find the number of items remaining in the queue with a specific priority level.
 
 ```js
-import PQueue from 'p-queue';
+import PQueue from "p-queue";
 
 const queue = new PQueue();
 
-queue.add(async () => '🦄', {priority: 1});
-queue.add(async () => '🦄', {priority: 0});
-queue.add(async () => '🦄', {priority: 1});
+queue.add(async () => "🦄", { priority: 1 });
+queue.add(async () => "🦄", { priority: 0 });
+queue.add(async () => "🦄", { priority: 1 });
 
-console.log(queue.sizeBy({priority: 1}));
+console.log(queue.sizeBy({ priority: 1 }));
 //=> 2
 
-console.log(queue.sizeBy({priority: 0}));
+console.log(queue.sizeBy({ priority: 0 }));
 //=> 1
 ```
 
@@ -255,14 +255,16 @@ Whether the queue is currently paused.
 Emitted as each item is processed in the queue for the purpose of tracking progress.
 
 ```js
-import delay from 'delay';
-import PQueue from 'p-queue';
+import delay from "delay";
+import PQueue from "p-queue";
 
-const queue = new PQueue({concurrency: 2});
+const queue = new PQueue({ concurrency: 2 });
 
 let count = 0;
-queue.on('active', () => {
-	console.log(`Working on item #${++count}.  Size: ${queue.size}  Pending: ${queue.pending}`);
+queue.on("active", () => {
+	console.log(
+		`Working on item #${++count}.  Size: ${queue.size}  Pending: ${queue.pending}`,
+	);
 });
 
 queue.add(() => Promise.resolve());
@@ -277,16 +279,16 @@ queue.add(() => delay(500));
 Emitted when an item completes without error.
 
 ```js
-import delay from 'delay';
-import PQueue from 'p-queue';
+import delay from "delay";
+import PQueue from "p-queue";
 
-const queue = new PQueue({concurrency: 2});
+const queue = new PQueue({ concurrency: 2 });
 
-queue.on('completed', result => {
+queue.on("completed", (result) => {
 	console.log(result);
 });
 
-queue.add(() => Promise.resolve('hello, world!'));
+queue.add(() => Promise.resolve("hello, world!"));
 ```
 
 #### error
@@ -294,16 +296,16 @@ queue.add(() => Promise.resolve('hello, world!'));
 Emitted if an item throws an error.
 
 ```js
-import delay from 'delay';
-import PQueue from 'p-queue';
+import delay from "delay";
+import PQueue from "p-queue";
 
-const queue = new PQueue({concurrency: 2});
+const queue = new PQueue({ concurrency: 2 });
 
-queue.on('error', error => {
+queue.on("error", (error) => {
 	console.error(error);
 });
 
-queue.add(() => Promise.reject(new Error('error')));
+queue.add(() => Promise.reject(new Error("error")));
 ```
 
 #### empty
@@ -319,12 +321,12 @@ Emitted every time the queue becomes empty and all promises have completed; `que
 The difference with `empty` is that `idle` guarantees that all work from the queue has finished. `empty` merely signals that the queue is empty, but it could mean that some promises haven't completed yet.
 
 ```js
-import delay from 'delay';
-import PQueue from 'p-queue';
+import delay from "delay";
+import PQueue from "p-queue";
 
 const queue = new PQueue();
 
-queue.on('idle', () => {
+queue.on("idle", () => {
 	console.log(`Queue is idle.  Size: ${queue.size}  Pending: ${queue.pending}`);
 });
 
@@ -350,17 +352,19 @@ Emitted every time the add method is called and the number of pending or queued 
 Emitted every time a task is completed and the number of pending or queued tasks is decreased. This is emitted regardless of whether the task completed normally or with an error.
 
 ```js
-import delay from 'delay';
-import PQueue from 'p-queue';
+import delay from "delay";
+import PQueue from "p-queue";
 
 const queue = new PQueue();
 
-queue.on('add', () => {
+queue.on("add", () => {
 	console.log(`Task is added.  Size: ${queue.size}  Pending: ${queue.pending}`);
 });
 
-queue.on('next', () => {
-	console.log(`Task is completed.  Size: ${queue.size}  Pending: ${queue.pending}`);
+queue.on("next", () => {
+	console.log(
+		`Task is completed.  Size: ${queue.size}  Pending: ${queue.pending}`,
+	);
 });
 
 const job1 = queue.add(() => delay(2000));
@@ -381,10 +385,10 @@ await queue.add(() => delay(600));
 A more advanced example to help you understand the flow.
 
 ```js
-import delay from 'delay';
-import PQueue from 'p-queue';
+import delay from "delay";
+import PQueue from "p-queue";
 
-const queue = new PQueue({concurrency: 1});
+const queue = new PQueue({ concurrency: 1 });
 
 (async () => {
 	await delay(200);
@@ -393,34 +397,34 @@ const queue = new PQueue({concurrency: 1});
 	//=> '8. Pending promises: 0'
 
 	(async () => {
-		await queue.add(async () => '🐙');
-		console.log('11. Resolved')
+		await queue.add(async () => "🐙");
+		console.log("11. Resolved");
 	})();
 
-	console.log('9. Added 🐙');
+	console.log("9. Added 🐙");
 
 	console.log(`10. Pending promises: ${queue.pending}`);
 	//=> '10. Pending promises: 1'
 
 	await queue.onIdle();
-	console.log('12. All work is done');
+	console.log("12. All work is done");
 })();
 
 (async () => {
-	await queue.add(async () => '🦄');
-	console.log('5. Resolved')
+	await queue.add(async () => "🦄");
+	console.log("5. Resolved");
 })();
-console.log('1. Added 🦄');
+console.log("1. Added 🦄");
 
 (async () => {
-	await queue.add(async () => '🐴');
-	console.log('6. Resolved')
+	await queue.add(async () => "🐴");
+	console.log("6. Resolved");
 })();
-console.log('2. Added 🐴');
+console.log("2. Added 🐴");
 
 (async () => {
 	await queue.onEmpty();
-	console.log('7. Queue is empty');
+	console.log("7. Queue is empty");
 })();
 
 console.log(`3. Queue size: ${queue.size}`);
@@ -451,7 +455,7 @@ $ node example.js
 For implementing more complex scheduling policies, you can provide a QueueClass in the options:
 
 ```js
-import PQueue from 'p-queue';
+import PQueue from "p-queue";
 
 class QueueClass {
 	constructor() {
@@ -475,7 +479,7 @@ class QueueClass {
 	}
 }
 
-const queue = new PQueue({queueClass: QueueClass});
+const queue = new PQueue({ queueClass: QueueClass });
 ```
 
 `p-queue` will call corresponding methods to put and get operations from this queue.
